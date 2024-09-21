@@ -98,6 +98,6 @@ def main():
             print(f"{{{u}, {v}, {costo}}}")
 
 
-if _name_ == "_main_":
+if __name__ == "_main_":
     main()
 input("Presiona Enter para salir...")
