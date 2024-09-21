@@ -1,37 +1,42 @@
-from collections import default, deque
+from collections import defaultdict, deque
 
+
+# Clase para representar un Grafo Dirigido Acíclico (DAG)
 class GrafoDAG:
-     def __init__(self, vertices):
-         self.grafo = defaultdict(list)
-         self.vertices = vertices
-         self.costos = {}
- 
-     # Medtodo para añadir una arista
-     def añadir_arista(self, u ,v ,costo
-         self.grafo[u].append(v)
-         self.costos[(u,v)] = costo
-    
-     #funcion para encontrar el vertice con mas caminos alcanzables
-     def vertice_mas_alcanzable(self, fuente):
-         caminos = defaultdict(list)
+    def _init_(self, vertices):
+        self.grafo = defaultdict(list)
+        self.vertices = vertices
+        self.costos = {}
 
-         def dfs(v, camino, costo, visitados):
-             if v in visitados
-                 return
-             visitados.add(v)
-             camino.append(v)
-             caminos[v].append((list(camino), costo))
-             for vecino in self.grafo[v]:
-                 dfs(vecino, camino, costo + self.costos[(v, vecino)], visitados)
-             camino.pop()
-             visitados.remove(v)
-          # llamamos a la funcion dfs desde el vertice fuente
-          dfs(fuente, camino[], costo:0, set())
-          #Encontrar al vertice mas alcanzable basado en el numero de caminos
-          mas_alcanzable = max(caminos, key=lambda k: len(caminos[k]))
-          print(f"vertice mas alcanzable: {mas_alcanzable}")
-         
-           Ordenamos los caminos hacia el vértice alcanzable por costo en orden descendente
+    # Método para añadir una arista
+    def añadir_arista(self, u, v, costo):
+        self.grafo[u].append(v)
+        self.costos[(u, v)] = costo
+
+    # Función para encontrar el vértice con más caminos alcanzables
+    def vertice_mas_alcanzable(self, fuente):
+        caminos = defaultdict(list)
+
+        # Función de búsqueda en profundidad para encontrar caminos
+        def dfs(v, camino, costo, visitados):
+            if v in visitados:
+                return
+            visitados.add(v)
+            camino.append(v)
+            caminos[v].append((list(camino), costo))
+            for vecino in self.grafo[v]:
+                dfs(vecino, camino, costo + self.costos[(v, vecino)], visitados)
+            camino.pop()
+            visitados.remove(v)
+
+        # Llamamos a la función DFS desde el vértice fuente
+        dfs(fuente, [], 0, set())
+
+        # Encontrar el vértice más alcanzable basado en el número de caminos
+        mas_alcanzable = max(caminos, key=lambda k: len(caminos[k]))
+        print(f"Vértice más alcanzable: {mas_alcanzable}")
+
+        # Ordenamos los caminos hacia el vértice alcanzable por costo en orden descendente
         caminos_ordenados = sorted(caminos[mas_alcanzable], key=lambda x: x[1], reverse=True)
         print(f"Caminos hacia el vértice {mas_alcanzable} ordenados por costo descendente:")
         for camino, costo in caminos_ordenados:
